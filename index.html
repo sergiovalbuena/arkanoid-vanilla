@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arkanoid Game - Vanilla JS</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: #f0f0f0;
+        display: grid;
+        place-content: center;
+      }
+
+      canvas {
+        border: 4px solid #000;
+        border-bottom: transparent;
+        background: url("./bkg.png") repeat;
+        margin: 0 auto;
+        display: block;
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+      }
+    </style>
+    <canvas></canvas>
+
+    <img hidden id="sprite" src="./sprite.png" alt="Sprite Arkanoid" />
+    <img hidden id="bricks" src="./bricks.png" alt="Sprite Bricks Arkanoid" />
+
+    <script>
+      const canvas = document;
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = 480;
+      canvas.height = 420;
+
+      //GAME VARS
+
+      //BALL VARS
+      const ballRadius = 4;
+      //posicion de la pelota
+      let x = canvas.width / 2;
+      let y = canvas.height - 30;
+      //velocidad de l apelota
+      let dx = 2;
+      let dy = -2;
+
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function cleanCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+      }
+
+      function draw() {
+        cleanCanvas();
+        console.log("hola recursvidad, esta fx se llama asi mismo");
+        window.requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>
