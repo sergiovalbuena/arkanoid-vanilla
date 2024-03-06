@@ -16,7 +16,7 @@
       canvas {
         border: 4px solid #000;
         border-bottom: transparent;
-        background: url("./bkg.png") repeat;
+        /* background: url("./bkg.png") repeat;*/
         margin: 0 auto;
         display: block;
         box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
@@ -24,15 +24,15 @@
     </style>
     <canvas></canvas>
 
-    <img hidden id="sprite" src="./sprite.png" alt="Sprite Arkanoid" />
-    <img hidden id="bricks" src="./bricks.png" alt="Sprite Bricks Arkanoid" />
+    <!-- <img hidden id="sprite" src="./sprite.png" alt="Sprite Arkanoid" /> -->
+    <!-- <img hidden id="bricks" src="./bricks.png" alt="Sprite Bricks Arkanoid" /> -->
 
     <script>
-      const canvas = document;
+      const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
 
-      canvas.width = 480;
-      canvas.height = 420;
+      canvas.width = 448;
+      canvas.height = 400;
 
       //GAME VARS
 
@@ -53,6 +53,8 @@
       let paddleY = canvas.height - paddleHeight - 10;
       let rightPressed = false;
       let leftPressed = false;
+
+      const PADDLE_SPEED = 7;
 
       // Functions
 
@@ -89,23 +91,49 @@
       }
 
       function initEvents() {
-        document.addEventListener("keydown", keyDownHandler, false);
-        document.addEventListener("keyup", keyUpHandler, false);
+        document.addEventListener("keydown", keyDownHandler);
+        document.addEventListener("keyup", keyUpHandler);
 
-        function keyDownHandler(e) {
-          if (e.key === "Right" || e.key === "ArrowRight") {
+        function keyDownHandler(event) {
+          const { key } = event;
+          if (
+            key === "Right" ||
+            key === "ArrowRight" ||
+            key.toLowerCase() === "d"
+          ) {
             rightPressed = true;
-          } else if (e.key === "Left" || e.key === "ArrowLeft") {
+          } else if (
+            key === "Left" ||
+            key === "ArrowLeft" ||
+            key.toLowerCase() === "a"
+          ) {
             leftPressed = true;
           }
         }
 
-        function keyUpHandler(e) {
-          if (e.key === "Right" || e.key === "ArrowRight") {
+        function keyUpHandler(event) {
+          const { key } = event;
+          if (
+            key === "Right" ||
+            key === "ArrowRight" ||
+            key.toLowerCase() === "d"
+          ) {
             rightPressed = false;
-          } else if (e.key === "Left" || e.key === "ArrowLeft") {
+          } else if (
+            key === "Left" ||
+            key === "ArrowLeft" ||
+            key.toLowerCase() === "a"
+          ) {
             leftPressed = false;
           }
+        }
+      }
+
+      function paddleMovement() {
+        if (rightPressed && paddleX < canvas.width - paddleWidth) {
+          paddleX += PADDLE_SPEED;
+        } else if (leftPressed && paddleX > 0) {
+          paddleX -= PADDLE_SPEED;
         }
       }
 
@@ -120,11 +148,13 @@
         //hay que dibjuar los elementos
         drawBall();
         drawPaddle();
-        drawBricks();
+
+        initEvents();
+        // drawBricks();
         //drawScore()
 
         //collisiones y moves
-        collisionDetection();
+        // collisionDetection();
         ballMovement();
         paddleMovement();
 
